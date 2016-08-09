@@ -9,7 +9,7 @@ Add the following dependencies to your `project.clj` file:
     [com.stuartsierra/component "0.2.2"]
     [compojure "1.3.1"]
     [ring "1.3.2"]
-    [valichek/component-compojure "0.2-SNAPSHOT"]
+    [valichek/component-compojure "0.2"]
 
 ##How it works
 Dependencies is the main feature of Component. The good way to provide compojure request handlers with Component dependencies is to merge dependencies with request map. That is what `component.compojure.core/defroutes` macros does. 

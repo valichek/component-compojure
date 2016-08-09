@@ -1,4 +1,4 @@
-(defproject valichek/component-compojure "0.2-SNAPSHOT"
+(defproject valichek/component-compojure "0.2"
   :description "Compojure routes as Stuart Sierra's component"
   :url "https://github.com/valichek/component-compojure"
   :license {:name "Eclipse Public License"
