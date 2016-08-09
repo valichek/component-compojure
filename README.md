@@ -1,5 +1,5 @@
 #Component-compojure
-![Clojars Project](http://clojars.org/valichek/component-compojure/latest-version.svg)
+[![Clojars Project](https://img.shields.io/clojars/v/valichek/component-compojure.svg)](https://clojars.org/valichek/component-compojure)
 
 This is a little helpful macro to create [Stuart Sierra's component](https://github.com/stuartsierra/component) with [compojure](https://github.com/weavejester/compojure) Ring handlers. It is based on [Ievgenii Nikolchev's](https://github.com/ggenikus) [library](https://github.com/ggenikus/comcomp) with changes proposed by [Andreas Klein](https://github.com/Kungi) to fix this [issue](https://github.com/ggenikus/comcomp/issues/1).
 
@@ -12,12 +12,12 @@ Add the following dependencies to your `project.clj` file:
     [valichek/component-compojure "0.2"]
 
 ##How it works
-Dependencies is the main feature of Component. The good way to provide compojure request handlers with Component dependencies is to merge dependencies with request map. That is what `component.compojure.core/defroutes` macros does. 
+Dependencies is the main feature of Component. The good way to provide compojure request handlers with Component dependencies is to merge dependencies with request map. That is what `component.compojure.core/defroutes` macros does.
 
 The typical request map from provided example looks like:
 ```clojure
-{:cookies {}, :remote-addr "127.0.0.1", :params {}, :flash nil, :route-params {}, :headers {"accept" "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "accept-encoding" "gzip, deflate", "accept-language" "en-US,en;q=0.5", "connection" "keep-alive", "host" "127.0.0.1:9999", "user-agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:35.0) Gecko/20100101 Firefox/35.0"}, :async-channel #/127.0.0.1:55106>, :server-port 9999, :content-length 0, :form-params {}, :websocket? false, :session/key nil, :query-params {}, :content-type nil, 
-:system-deps {:db #conch_example.core.Database{:host "0.0.0.0", :port 9900, :connection {:host "0.0.0.0", :port 9900, :word "Hello", :count 5}}}, 
+{:cookies {}, :remote-addr "127.0.0.1", :params {}, :flash nil, :route-params {}, :headers {"accept" "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "accept-encoding" "gzip, deflate", "accept-language" "en-US,en;q=0.5", "connection" "keep-alive", "host" "127.0.0.1:9999", "user-agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:35.0) Gecko/20100101 Firefox/35.0"}, :async-channel #/127.0.0.1:55106>, :server-port 9999, :content-length 0, :form-params {}, :websocket? false, :session/key nil, :query-params {}, :content-type nil,
+:system-deps {:db #conch_example.core.Database{:host "0.0.0.0", :port 9900, :connection {:host "0.0.0.0", :port 9900, :word "Hello", :count 5}}},
 :character-encoding "utf8", :uri "/help", :server-name "127.0.0.1", :query-string nil, :body nil, :multipart-params {}, :scheme :http, :request-method :get, :session {}}
 ```
 Note that `:system-deps` contains `db` dependency:
@@ -25,7 +25,7 @@ Note that `:system-deps` contains `db` dependency:
     :system-deps {:db #conch_example.core.Database{:host "0.0.0.0", :port 9900, :connection {:host "0.0.0.0", :port 9900, :word "Hello", :count 5}}}
 
 ##Component dependencies and limitations for request destructuring
-To take advantage from Component system when handling requests with Compojure we need to extract dependencies from request. 
+To take advantage from Component system when handling requests with Compojure we need to extract dependencies from request.
 
 The most general case is to capture the dependencies from request map directly:
 
@@ -39,10 +39,10 @@ Note that `:db` keyword and `db` parameter should have the same names.
 The good way to get dependencies is to use destructuring syntax:
 ```clojure
 (ccompojure/defroutes ServerRoutes [db]
-  (compojure/GET "/word" 
-                 [:as request 
-                  :as {deps :system-deps} 
-                  :as {{db :db} :system-deps}] 
+  (compojure/GET "/word"
+                 [:as request
+                  :as {deps :system-deps}
+                  :as {{db :db} :system-deps}]
                  (str request deps db)))
 ```
 
@@ -91,7 +91,7 @@ Then:
     ;; Return the component, optionally modified. Remember that if you
     ;; dissoc one of a record's base fields, you get a plain map.
     (assoc component :connection nil)))
-    
+
 ;; create ServerRoutes component and pass Database to the request handlers
 (defn get-word [request deps db]
   (:word (:connection db)))
@@ -167,14 +167,14 @@ To start/stop the system:
 ```
 The same but catching errors from components:
 ```clojure
-(try 
+(try
   (alter-var-root #'system component/start)
   (catch Throwable t
     (.getCause t)))
 ;; Starting database
 ;; Starting server
 
-(try 
+(try
   (alter-var-root #'system component/stop)
   (catch Throwable t
     (.getCause t)))
